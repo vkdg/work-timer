@@ -5,6 +5,7 @@ $color_bg: #f6f8fa;
 $color_bg_default: #ffffff;
 $color_border: rgba(27, 31, 36, 0.15);
 
+$color_button_text: #000000;
 $color_button_bg: #f6f8fa;
 $color_button_bg_hover: #f3f4f6;
 $color_button_border: rgba(27, 31, 36, 0.15);
@@ -28,6 +29,8 @@ body {
 
     --color-border: #{$color_border};
     --color-border-buttons: #{$color_button_border};
+
+    --color-text-buttons: #{$color_button_text};
 }
 
 .timersArea {
@@ -60,6 +63,7 @@ body {
             background-color: var(--color-bg-buttons);
             border: 1px solid var(--color-border-buttons);
             border-radius: 6px;
+            color: var(--color-text-buttons);
             transition-property: color, background-color, box-shadow, border-color;
             transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
             transition-duration: 80ms;
@@ -103,6 +107,7 @@ body {
                 background-color: transparent;
                 border: none;
                 text-decoration: underline dotted;
+                padding: 5px 0;
                 cursor: text;
 
                 &:focus {
@@ -119,6 +124,7 @@ body {
                 height: 30px;
                 border-radius: 10em;
                 border: none;
+                color: var(--color-text-buttons);
                 appearance: none;
                 background-color: var(--color-bg-buttons);
                 border: 1px solid var(--color-border-buttons);
