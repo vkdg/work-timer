@@ -3,6 +3,7 @@ import Timer from './modules/timer'
 
 const ui = new UI()
 const timers = new Map()
+
 let timerID = 0
 
 const removeTimer = id => {
@@ -28,7 +29,7 @@ const restartTimer = (timer, timerDOM) => {
 
 const createTimer = e => {
     const timerDOM = ui.renderTimerDOM(timerID)
-    const timer = new Timer(timerDOM)
+    const timer = new Timer(timerDOM.timerTitleInput.value)
 
     timers.set(timerID, { timerDOM, controls: timer })
 
@@ -37,6 +38,8 @@ const createTimer = e => {
     timerDOM.timerRemove.addEventListener('click', removeTimer.bind(undefined, timerID))
 
     timerID++
+
+    console.log(createTimersBackup())
 }
 
 const updateTimers = () => {
@@ -48,6 +51,19 @@ const updateTimers = () => {
             if (currentTime) currentTimer.timerDOM.timerResult.innerText = currentTime
         }
     }, 1000);
+}
+
+const createTimersBackup = () => {
+    if (timers.size > 0) {
+        const timersArray = []
+        for (const key of timers.keys()) {
+            timersArray.push(timers.get(key).controls)
+        }
+
+        return timersArray
+    }
+
+    return false
 }
 
 document.addEventListener('DOMContentLoaded', () => {

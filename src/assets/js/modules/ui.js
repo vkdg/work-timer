@@ -37,7 +37,7 @@ export default class UI {
         this.timerCreatorInputTitle = timerCreatorInputTitle
 
         timerCreatorButton.classList.add('creator__button')
-        timerCreatorButton.innerText = 'Создать таймер'
+        timerCreatorButton.innerText = 'Создать'
         if (props.creatorButtonClasses) timerCreatorButton.classList.add(...props.creatorButtonClasses)
 
         timersArea.classList.add('timers')
@@ -63,6 +63,7 @@ export default class UI {
     renderTimerDOM(timerID) {
         const timerArea = document.createElement('div')
         const timerTitle = document.createElement('div')
+        const timerTitleInput = document.createElement('input')
         const timerTitleValue = this.timerCreatorInputTitle.value.trim()
         const timerResult = document.createElement('div')
         const timerPlayPause = document.createElement('button')
@@ -72,6 +73,9 @@ export default class UI {
 
         timerArea.classList.add('timer')
         timerArea.dataset.id = timerID
+
+        timerTitleInput.value = timerTitleValue.length ? timerTitleValue : 'Untitled'
+        timerTitleInput.classList.add('timer__title-input')
 
         timerTitle.innerText = timerTitleValue.length ? timerTitleValue : 'Untitled'
         this.clearCreatorTimerTitle()
@@ -89,6 +93,7 @@ export default class UI {
         timerRestart.classList.add('timer__button', 'timer__button_restart')
         timerRestart.innerText = '↻'
 
+        timerArea.appendChild(timerTitleInput)
         timerArea.appendChild(timerTitle)
         timerArea.appendChild(timerPlayPause)
         timerArea.appendChild(timerResult)
@@ -99,6 +104,7 @@ export default class UI {
 
         return {
             timerArea,
+            timerTitleInput,
             timerTitle,
             timerResult,
             timerPlayPause,
