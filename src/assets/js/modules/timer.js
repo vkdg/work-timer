@@ -3,6 +3,11 @@ export default class Timer {
     #started = false
     #paused = 0
     #pauseStarted = undefined
+    #title = undefined
+
+    constructor(timerTitle) {
+        this.#title = timerTitle
+    }
 
     #getTimeString(seconds) {
         seconds = Math.floor(seconds / 1000)

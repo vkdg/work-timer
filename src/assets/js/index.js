@@ -3,6 +3,7 @@ import Timer from './modules/timer'
 
 const ui = new UI()
 const timers = new Map()
+
 let timerID = 0
 
 const removeTimer = id => {
@@ -26,9 +27,9 @@ const restartTimer = (timer, timerDOM) => {
     timerDOM.timerResult.innerText = '00:00:00 — 0.00'
 }
 
-const createTimer = e => {
+const createTimer = () => {
     const timerDOM = ui.renderTimerDOM(timerID)
-    const timer = new Timer(timerDOM)
+    const timer = new Timer(timerDOM.timerTitleInput.value)
 
     timers.set(timerID, { timerDOM, controls: timer })
 
@@ -37,6 +38,8 @@ const createTimer = e => {
     timerDOM.timerRemove.addEventListener('click', removeTimer.bind(undefined, timerID))
 
     timerID++
+
+    console.log(createTimersBackup())
 }
 
 const updateTimers = () => {
@@ -50,13 +53,43 @@ const updateTimers = () => {
     }, 1000);
 }
 
+const createTimersBackup = () => {
+    if (timers.size > 0) {
+        const timersArray = []
+        for (const key of timers.keys()) {
+            timersArray.push(timers.get(key).controls)
+        }
+
+        return timersArray
+    }
+
+    return false
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const elements = ui.renderBaseDOM({
-        baseAreaClasses: false, // [string]
-        creatorAreaClasses: false, // [string]
-        creatorInputClasses: false, // [string]
-        customPlaceholder: false, // string
-        creatorButtonClasses: false, // [string]
+        base: {
+            areaClasses: false, // array of strings || false
+        },
+        creator: {
+            areaClasses: false, // array of strings || false
+            inputClasses: false, // array of strings || false
+            inputPlaceholder: "Название таймера", // string || false,
+            buttonClasses: false, // array of strings || false
+            buttonText: false, // string || false
+        }
+    })
+
+    document.addEventListener('keypress', e => {
+        const target = e.target
+        if (e.key === "Enter") {
+            if (
+                target.dataset.area === 'creator-title-input'
+                && target.value.length > 0
+            ) {
+                createTimer()
+            }
+        }
     })
 
     elements.timerCreatorButton.addEventListener('click', createTimer)
