@@ -95,18 +95,14 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: `assets/css/[name].min.css`,
         }),
-        // new CopyWebpackPlugin({
-        //     patterns: [
-        //         {
-        //             from: `${PATHS.src}/assets/img`,
-        //             to: `assets/img`
-        //         },
-        //         {
-        //             from: `${PATHS.src}/assets/fonts`,
-        //             to: `assets/fonts`
-        //         }
-        //     ]
-        // }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: `${PATHS.src}/assets/public/*`,
+                    to: `${PATHS.dist}/[name][ext]`
+                },
+            ]
+        }),
         ...PAGES.map(
             page =>
                 new HtmlWebpackPlugin({
@@ -117,7 +113,11 @@ module.exports = {
                     template: `${PAGES_DIR}/${page}`,
                     filename: `./${page}`,
                     meta: {
-                        viewport: 'width=device-width, initial-scale=1'
+                        'viewport': 'width=device-width, initial-scale=1, user-scalable=no',
+                        'apple-mobile-web-app-title': 'Timers',
+                        'apple-mobile-web-app-capable': 'yes',
+                        'format-detection': 'telephone=no',
+                        'format-detection': 'address=no',
                     }
                 })
         )
