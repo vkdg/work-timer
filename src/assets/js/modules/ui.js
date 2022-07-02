@@ -24,21 +24,22 @@ export default class UI {
         const timersArea = document.createElement('div')
 
         baseArea.classList.add('timersArea')
-        if (props.baseAreaClasses) baseArea.classList.add(...props.baseAreaClasses)
+        if (props.base.areaClasses) baseArea.classList.add(...props.base.areaClasses)
         this.baseArea = baseArea
 
         timerCreatorArea.classList.add('creator')
-        if (props.creatorAreaClasses) timerCreatorArea.classList.add(...props.creatorAreaClasses)
+        if (props.creator.areaClasses) timerCreatorArea.classList.add(...props.creator.areaClasses)
 
         timerCreatorInputTitle.classList.add('creator__title')
-        timerCreatorInputTitle.placeholder = props.customPlaceholder || 'Имя таймера (по умолчанию "Untitled")'
+        timerCreatorInputTitle.placeholder = props.creator.inputPlaceholder || 'Имя таймера (по умолчанию "Untitled")'
         timerCreatorInputTitle.autocomplete = 'off'
-        if (props.creatorInputClasses) timerCreatorInputTitle.classList.add(...props.creatorInputClasses)
+        timerCreatorInputTitle.dataset.area = 'creator-title-input'
+        if (props.creator.inputClasses) timerCreatorInputTitle.classList.add(...props.creator.inputClasses)
         this.timerCreatorInputTitle = timerCreatorInputTitle
 
         timerCreatorButton.classList.add('creator__button')
-        timerCreatorButton.innerText = 'Создать'
-        if (props.creatorButtonClasses) timerCreatorButton.classList.add(...props.creatorButtonClasses)
+        timerCreatorButton.innerText = props.creator.buttonText || 'Создать'
+        if (props.creator.buttonClasses) timerCreatorButton.classList.add(...props.creator.buttonClasses)
 
         timersArea.classList.add('timers')
         this.timersArea = timersArea

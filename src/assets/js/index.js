@@ -27,7 +27,7 @@ const restartTimer = (timer, timerDOM) => {
     timerDOM.timerResult.innerText = '00:00:00 — 0.00'
 }
 
-const createTimer = e => {
+const createTimer = () => {
     const timerDOM = ui.renderTimerDOM(timerID)
     const timer = new Timer(timerDOM.timerTitleInput.value)
 
@@ -68,11 +68,28 @@ const createTimersBackup = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     const elements = ui.renderBaseDOM({
-        baseAreaClasses: false, // [string]
-        creatorAreaClasses: false, // [string]
-        creatorInputClasses: false, // [string]
-        customPlaceholder: false, // string
-        creatorButtonClasses: false, // [string]
+        base: {
+            areaClasses: false, // array of strings || false
+        },
+        creator: {
+            areaClasses: false, // array of strings || false
+            inputClasses: false, // array of strings || false
+            inputPlaceholder: "Название таймера", // string || false,
+            buttonClasses: false, // array of strings || false
+            buttonText: false, // string || false
+        }
+    })
+
+    document.addEventListener('keypress', e => {
+        const target = e.target
+        if (e.key === "Enter") {
+            if (
+                target.dataset.area === 'creator-title-input'
+                && target.value.length > 0
+            ) {
+                createTimer()
+            }
+        }
     })
 
     elements.timerCreatorButton.addEventListener('click', createTimer)
