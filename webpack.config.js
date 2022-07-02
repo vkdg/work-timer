@@ -30,6 +30,15 @@ module.exports = {
         path: PATHS.dist,
         publicPath: '/'
     },
+    resolve: {
+        alias: {
+            '~node_modules': path.join(__dirname, './node_modules'),
+            '~css': path.join(__dirname, './src/assets/scss'),
+            '~js': path.join(__dirname, './src/assets/js'),
+            '~img': path.join(__dirname, './src/assets/img'),
+            '~fonts': path.join(__dirname, './src/assets/fonts'),
+        }
+    },
     devServer: {
         allowedHosts: 'all',
         port: 5051,

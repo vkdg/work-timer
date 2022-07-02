@@ -1,5 +1,5 @@
-import UI from './modules/ui'
-import Timer from './modules/timer'
+import UI from '~js/modules/ui'
+import Timer from '~js/modules/timer'
 
 const ui = new UI()
 const timers = new Map()
@@ -28,7 +28,16 @@ const restartTimer = (timer, timerDOM) => {
 }
 
 const createTimer = () => {
-    const timerDOM = ui.renderTimerDOM(timerID)
+    const timerDOM = ui.renderTimerDOM(timerID, {
+        areaClasses: false, // array of strings || false
+        titleInputClasses: false, // array of strings || false
+        titleClasses: false, // array of strings || false
+        defaultTitle: false, // string || false
+        resultClasses: false, // array of strings || false
+        playPauseClasses: false, // array of strings || false
+        removeClasses: false, // array of strings || false
+        restartClasses: false, // array of strings || false
+    })
     const timer = new Timer(timerDOM.timerTitleInput.value)
 
     timers.set(timerID, { timerDOM, controls: timer })
@@ -57,10 +66,10 @@ const createTimersBackup = () => {
     if (timers.size > 0) {
         const timersArray = []
         for (const key of timers.keys()) {
-            timersArray.push(timers.get(key).controls)
+            timersArray.push(timers.get(key).controls.timerData)
         }
 
-        return timersArray
+        return JSON.stringify(timersArray)
     }
 
     return false
