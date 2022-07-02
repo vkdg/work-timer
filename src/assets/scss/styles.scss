@@ -1,6 +1,5 @@
 @import './utils/reset.scss';
-
-$color_text: #6c768f;
+@import './utils/mixins.scss';
 
 $color_bg: #f6f8fa;
 $color_bg_default: #ffffff;
@@ -33,7 +32,7 @@ body {
 
 .timersArea {
     width: 100%;
-    max-width: 700px;
+    max-width: 767px;
     margin: 60px auto;
     background-color: var(--color-bg);
     border-radius: 6px;
@@ -144,6 +143,27 @@ body {
                 &_remove {
                     font-size: 18px;
                 }
+            }
+        }
+    }
+}
+
+@include mobile {
+    .timersArea {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        border-radius: 0;
+        border-width: 0 0 1px 0;
+
+        .creator {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+            justify-content: space-between;
+
+            &__title {
+                margin-bottom: 0;
             }
         }
     }
