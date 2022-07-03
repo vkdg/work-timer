@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>pause-white</title>
+    <defs>
+        <path d="M13.75,37.5 L6.25,37.5 C4.1796875,37.5 2.5,35.8203125 2.5,33.75 L2.5,6.25 C2.5,4.1796875 4.1796875,2.5 6.25,2.5 L13.75,2.5 C15.8203125,2.5 17.5,4.1796875 17.5,6.25 L17.5,33.75 C17.5,35.8203125 15.8203125,37.5 13.75,37.5 Z M37.5,33.75 L37.5,6.25 C37.5,4.1796875 35.8203125,2.5 33.75,2.5 L26.25,2.5 C24.1796875,2.5 22.5,4.1796875 22.5,6.25 L22.5,33.75 C22.5,35.8203125 24.1796875,37.5 26.25,37.5 L33.75,37.5 C35.8203125,37.5 37.5,35.8203125 37.5,33.75 Z" id="path-1"></path>
+    </defs>
+    <g id="pause-white" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Solid/pause" transform="translate(-0.000000, 0.500000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+            <g id="Group" mask="url(#mask-2)" fill="#FFFFFF">
+                <g id="Color">
+                    <rect id="White" x="0" y="0" width="40" height="40"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

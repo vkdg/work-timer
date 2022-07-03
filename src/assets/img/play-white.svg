@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>play-white</title>
+    <defs>
+        <path d="M35.65625,16.7709332 L8.15625,0.513120695 C5.921875,-0.807191805 2.5,0.474058195 2.5,3.7396832 L2.5,36.2474957 C2.5,39.1771832 5.6796875,40.9428082 8.15625,39.4740582 L35.65625,23.2240582 C38.109375,21.7787457 38.1171875,18.2162457 35.65625,16.7709332 Z" id="path-1"></path>
+    </defs>
+    <g id="play-white" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Solid/play">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+            <g id="Group" mask="url(#mask-2)" fill="#FFFFFF">
+                <g id="Color">
+                    <rect id="White" x="0" y="0" width="40" height="40"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

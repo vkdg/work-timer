@@ -37,6 +37,16 @@ export default class Timer {
         return this.#pauseStarted ? true : false
     }
 
+    get timerData() {
+        return {
+            activated: this.#activated,
+            started: this.#started,
+            paused: this.#paused,
+            pauseStarted: this.#pauseStarted,
+            title: this.#title
+        }
+    }
+
     playPause() {
         const now = Date.now()
 
