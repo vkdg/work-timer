@@ -1,5 +1,8 @@
-import UI from '~js/modules/ui'
-import Timer from '~js/modules/timer'
+// Include styles
+import 'css/styles.scss'
+
+import UI from 'js/modules/ui'
+import Timer from 'js/modules/timer'
 
 const ui = new UI()
 const timers = new Map()
@@ -15,15 +18,15 @@ const startStopTimer = (timer, timerDOM) => {
     timer.playPause()
 
     if (timer.isPaused) {
-        timerDOM.timerPlayPause.innerText = '▶'
+        timerDOM.timerPlayPause.classList.add('timer__button_playpause-paused')
     } else {
-        timerDOM.timerPlayPause.innerText = '❙❙'
+        timerDOM.timerPlayPause.classList.remove('timer__button_playpause-paused')
     }
 }
 
 const restartTimer = (timer, timerDOM) => {
     timer.restart()
-    if (!timer.isPaused) timerDOM.timerPlayPause.innerText = '▶'
+    if (!timer.isPaused) timerDOM.timerPlayPause.classList.add('timer__button_playpause-paused')
     timerDOM.timerResult.innerText = '00:00:00 — 0.00'
 }
 

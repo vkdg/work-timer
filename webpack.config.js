@@ -17,13 +17,13 @@ const PAGES = fs.readdirSync(PAGES_DIR).filter(fileName => fileName.endsWith('.h
 
 module.exports = {
     // mode: process.env.MODE || 'development',
-    mode: 'development',
+    mode: process.env.APP_MODE || 'development',
     externals: {
         paths: PATHS
     },
     devtool: 'source-map',
     entry: {
-        app: [`${PATHS.src}/assets/js/index.js`, `${PATHS.src}/assets/scss/styles.scss`]
+        app: `${PATHS.src}/assets/js/index.js`
     },
     output: {
         filename: `assets/js/[name].min.js`,
@@ -32,16 +32,16 @@ module.exports = {
     },
     resolve: {
         alias: {
-            '~node_modules': path.join(__dirname, './node_modules'),
-            '~css': path.join(__dirname, './src/assets/scss'),
-            '~js': path.join(__dirname, './src/assets/js'),
-            '~img': path.join(__dirname, './src/assets/img'),
-            '~fonts': path.join(__dirname, './src/assets/fonts'),
+            node_modules: path.join(__dirname, './node_modules'),
+            css: path.join(__dirname, './src/assets/scss'),
+            js: path.join(__dirname, './src/assets/js'),
+            img: path.join(__dirname, './src/assets/img'),
+            fonts: path.join(__dirname, './src/assets/fonts'),
         }
     },
     devServer: {
         allowedHosts: 'all',
-        port: 5051,
+        port: process.env.WEBPACK_PORT || 5051,
         client: {
             logging: 'warn',
             overlay: {
@@ -77,26 +77,15 @@ module.exports = {
             }
         }, {
             test: /\.(png|jpg|gif|svg)$/,
-            loader: 'file-loader',
-            options: {
-                name: '[name].[ext]'
-            }
+            type: 'asset'
         }, {
-            test: /\.scss$/,
+            test: /\.(sa|sc|c)ss$/,
             use: [
                 'style-loader',
                 { loader: MiniCssExtractPlugin.loader, options: { esModule: false } },
-                { loader: 'css-loader', options: { sourceMap: true, url: false } },
+                { loader: 'css-loader', options: { sourceMap: true } },
                 { loader: 'postcss-loader', options: { sourceMap: true, postcssOptions: { config: path.resolve(__dirname, "./postcss.config.js") } } },
                 { loader: 'sass-loader', options: { sourceMap: true } }
-            ]
-        }, {
-            test: /\.css$/,
-            use: [
-                'style-loader',
-                { loader: MiniCssExtractPlugin.loader, options: { esModule: false } },
-                { loader: 'css-loader', options: { sourceMap: true, url: false } },
-                { loader: 'postcss-loader', options: { sourceMap: true, postcssOptions: { config: path.resolve(__dirname, "./postcss.config.js") } } },
             ]
         }]
     },

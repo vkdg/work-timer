@@ -70,12 +70,45 @@
                     color: white;
                 }
 
+                &_playpause {
+                    background-image: url(~img/pause.svg);
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    background-size: 12px;
+
+                    &:hover {
+                        background-image: url(~img/pause-white.svg);
+                    }
+                }
+
+                &_playpause-paused {
+                    background-image: url(~img/play.svg);
+
+                    &:hover {
+                        background-image: url(~img/play-white.svg);
+                    }
+                }
+
                 &_restart {
-                    font-size: 17px;
+                    background-image: url(~img/restart.svg);
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    background-size: 15px;
+
+                    &:hover {
+                        background-image: url(~img/restart-white.svg);
+                    }
                 }
 
                 &_remove {
-                    font-size: 18px;
+                    background-image: url(~img/remove.svg);
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    background-size: 15px;
+
+                    &:hover {
+                        background-image: url(~img/remove-white.svg);
+                    }
                 }
             }
         }

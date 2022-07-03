@@ -70,26 +70,18 @@ export default class UI {
         const timerRemove = document.createElement('div')
         const timerRestart = document.createElement('div')
 
-        timerArea.classList.add('timer')
         timerArea.dataset.id = timerID
-
-        timerTitleInput.value = timerTitleValue.length ? timerTitleValue : (props.defaultTitle ? props.defaultTitle : 'Untitled')
-        timerTitleInput.classList.add('timer__title-input')
-
-        timerTitle.innerText = timerTitleValue.length ? timerTitleValue : (props.defaultTitle ? props.defaultTitle : 'Untitled')
-        timerTitle.classList.add('timer__title')
-
         timerResult.innerText = `00:00:00 — 0.00`
+        timerTitleInput.value = timerTitleValue.length ? timerTitleValue : (props.defaultTitle ? props.defaultTitle : 'Untitled')
+        timerTitle.innerText = timerTitleValue.length ? timerTitleValue : (props.defaultTitle ? props.defaultTitle : 'Untitled')
+
+        timerArea.classList.add('timer')
+        timerTitleInput.classList.add('timer__title-input')
+        timerTitle.classList.add('timer__title')
         timerResult.classList.add('timer__result')
-
-        timerPlayPause.classList.add('timer__button', 'timer__button_playpause')
-        timerPlayPause.innerText = '▶'
-
+        timerPlayPause.classList.add('timer__button', 'timer__button_playpause', 'timer__button_playpause-paused')
         timerRemove.classList.add('timer__button', 'timer__button_remove')
-        timerRemove.innerText = '⤫'
-
         timerRestart.classList.add('timer__button', 'timer__button_restart')
-        timerRestart.innerText = '↻'
 
         if (props.areaClasses) timerArea.classList.add(...props.areaClasses)
         if (props.titleInputClasses) timerTitleInput.classList.add(...props.titleInputClasses)
