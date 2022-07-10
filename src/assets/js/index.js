@@ -132,34 +132,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Загрузка сохраненных таймеров
     if (storageAvailable) {
-        const timersBackup = JSON.parse(storage.data)
 
-        timersBackup.forEach((item, index) => {
-            console.log(item)
+        try {
+            const timersBackup = JSON.parse(storage.data)
 
-            const timerDOM = ui.renderTimerDOM(index, {
-                areaClasses: false, // array of strings || false
-                titleInputClasses: false, // array of strings || false
-                titleClasses: false, // array of strings || false
-                defaultTitle: item.title, // string || false
-                resultClasses: false, // array of strings || false
-                playPauseClasses: false, // array of strings || false
-                removeClasses: false, // array of strings || false
-                restartClasses: false, // array of strings || false
-            })
-            const timer = new Timer(item.title, item.duration)
+            timersBackup.forEach((item, index) => {
+                console.log(item)
 
-            timers.set(index, { timerDOM, controls: timer })
+                const timerDOM = ui.renderTimerDOM(index, {
+                    areaClasses: false, // array of strings || false
+                    titleInputClasses: false, // array of strings || false
+                    titleClasses: false, // array of strings || false
+                    defaultTitle: item.title, // string || false
+                    resultClasses: false, // array of strings || false
+                    playPauseClasses: false, // array of strings || false
+                    removeClasses: false, // array of strings || false
+                    restartClasses: false, // array of strings || false
+                })
+                const timer = new Timer(item.title, item.duration)
 
-            timerDOM.timerPlayPause.addEventListener('click', startStopTimer.bind(undefined, timer, timerDOM))
-            timerDOM.timerRestart.addEventListener('click', restartTimer.bind(undefined, timer, timerDOM))
-            timerDOM.timerRemove.addEventListener('click', removeTimer.bind(undefined, index))
-            timerDOM.timerTitleInput.addEventListener('keyup', updateTimerTitle.bind(undefined, timer, timerDOM))
+                timers.set(index, { timerDOM, controls: timer })
 
-            timerDOM.timerResult.innerText = timer.timeForReload.length > 18 ? '00:00:00 — 0.00' : timer.timeForReload
+                timerDOM.timerPlayPause.addEventListener('click', startStopTimer.bind(undefined, timer, timerDOM))
+                timerDOM.timerRestart.addEventListener('click', restartTimer.bind(undefined, timer, timerDOM))
+                timerDOM.timerRemove.addEventListener('click', removeTimer.bind(undefined, index))
+                timerDOM.timerTitleInput.addEventListener('keyup', updateTimerTitle.bind(undefined, timer, timerDOM))
 
-            timerID++
-        });
+                timerDOM.timerResult.innerText = timer.timeForReload.length > 18 ? '00:00:00 — 0.00' : timer.timeForReload
+
+                timerID++
+            });
+        } catch (e) {
+            console.info('Таймеры не обнаружены, объект для таймеров создан в localStorage')
+        }
+
     }
 
     elements.timerCreatorButton.addEventListener('click', createTimer)
