@@ -111,4 +111,13 @@ export default class UI {
             timerRestart
         }
     }
+
+    renderTimersHistoryDOM(baseArea, props) {
+        const historyArea = document.createElement('div')
+        historyArea.classList.add('history')
+
+        baseArea.appendChild(historyArea)
+
+        return historyArea
+    }
 }

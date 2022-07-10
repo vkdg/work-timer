@@ -55,10 +55,13 @@
                 align-items: center;
                 justify-content: center;
                 background-color: var(--color-bg-buttons);
+                background-repeat: no-repeat;
+                background-position: center center;
                 border: 1px solid var(--color-border-buttons);
                 margin-right: 10px;
                 cursor: pointer;
-                transition: all 150ms ease-in-out;
+                transition: 150ms ease-in-out;
+                transition-property: background-color, color;
 
                 &:hover {
                     background-color: #424242;
@@ -72,8 +75,6 @@
 
                 &_playpause {
                     background-image: url(~img/pause.svg);
-                    background-repeat: no-repeat;
-                    background-position: center center;
                     background-size: 12px;
 
                     &:hover {
@@ -83,6 +84,7 @@
 
                 &_playpause-paused {
                     background-image: url(~img/play.svg);
+                    background-size: 12px;
 
                     &:hover {
                         background-image: url(~img/play-white.svg);
@@ -91,9 +93,7 @@
 
                 &_restart {
                     background-image: url(~img/restart.svg);
-                    background-repeat: no-repeat;
-                    background-position: center center;
-                    background-size: 15px;
+                    background-size: 12px;
 
                     &:hover {
                         background-image: url(~img/restart-white.svg);
@@ -102,9 +102,7 @@
 
                 &_remove {
                     background-image: url(~img/remove.svg);
-                    background-repeat: no-repeat;
-                    background-position: center center;
-                    background-size: 15px;
+                    background-size: 14px;
 
                     &:hover {
                         background-image: url(~img/remove-white.svg);
