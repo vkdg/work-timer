@@ -16,39 +16,117 @@ export default class UI {
         if (element) element.remove()
     }
 
-    renderBaseDOM(props) {
-        const baseArea = document.createElement('div')
-        const timerCreatorArea = document.createElement('div')
-        const timerCreatorInputTitle = document.createElement('input')
-        const timerCreatorButton = document.createElement('button')
-        const timersArea = document.createElement('div')
+    _generateElement(el, cls, props = {}) {
+        const element = document.createElement(el)
 
-        baseArea.classList.add('timersArea')
+        if (Array.isArray(cls)) {
+            element.classList.add(...cls)
+        } else {
+            element.classList.add(cls)
+        }
+
+        switch (el) {
+            case 'input':
+                element.type = props.type ?? 'text'
+                if (props.name) element.name = props.name
+                if (props.disabled) element.disabled = true
+
+                switch (props.type) {
+                    case 'file':
+                        element.multiple = props.multiple ?? false
+                        element.accept = props.accept ?? false
+                        break
+                    case 'text':
+                        element.autocomplete = props.autocomplete ?? false
+                        element.placeholder = props.placeholder ?? false
+                        break
+                    case 'checkbox':
+                    case 'radio':
+                        element.checked = props.checked ?? null
+                }
+
+                break
+            case 'div':
+            case 'span':
+                element.innerText = props.innerText ?? null
+                break
+            case 'button':
+                element.type = props.type ?? 'button'
+                element.innerText = props.innerText ?? null
+        }
+
+        return element
+    }
+
+    _generateSettingsCheckbox(name, textContent, check) {
+        const setting = this._generateElement('label', 'settings__item')
+        const input = this._generateElement('input', 'settings__item-input', { type: 'checkbox', name: `settings-${name}`, checked: check })
+        const text = this._generateElement('span', 'settings__item-text', { innerText: textContent })
+
+        setting.appendChild(input)
+        setting.appendChild(text)
+
+        return setting
+    }
+
+    renderBaseDOM(props) {
+        const baseArea = this._generateElement('div', 'timersArea')
+        const timerCreatorArea = this._generateElement('div', 'creator')
+        const timerCreatorInputTitle = this._generateElement('input', 'creator__title', { type: 'text', autocomplete: 'off', placeholder: 'Название таймера' })
+        const timerCreatorButton = this._generateElement('button', ['creator__button', 'creator__button-create', 'creator__button-with-icon'], { innerText: 'Создать' })
+        const timersArea = this._generateElement('div', 'timers')
+        const exportButton = this._generateElement('button', ['creator__button', 'creator__button-export', 'creator__button-with-icon'], { innerText: 'Выгрузить' })
+        const importButton = this._generateElement('button', ['creator__button', 'creator__button-import', 'creator__button-with-icon'], { innerText: 'Загрузить' })
+        const importInput = this._generateElement('input', 'creator__file', { type: 'file', multiple: false, accept: '.json' })
+        const settingsButton = this._generateElement('button', ['creator__button', 'creator__button-settings'])
+        const settingsArea = this._generateElement('div', 'settings')
+        const settingsAreaGrid = this._generateElement('div', 'settings__grid')
+
         this.baseArea = baseArea
 
-        timerCreatorArea.classList.add('creator')
-
-        timerCreatorInputTitle.classList.add('creator__title')
-        timerCreatorInputTitle.placeholder = props.creator.inputPlaceholder || 'Имя таймера (по умолчанию "Untitled")'
-        timerCreatorInputTitle.autocomplete = 'off'
         timerCreatorInputTitle.dataset.area = 'creator-title-input'
         this.timerCreatorInputTitle = timerCreatorInputTitle
 
-        timerCreatorButton.classList.add('creator__button')
-        timerCreatorButton.innerText = props.creator.buttonText || 'Создать'
 
-        timersArea.classList.add('timers')
         this.timersArea = timersArea
 
-        if (props.base.areaClasses) baseArea.classList.add(...props.base.areaClasses)
-        if (props.creator.areaClasses) timerCreatorArea.classList.add(...props.creator.areaClasses)
-        if (props.creator.inputClasses) timerCreatorInputTitle.classList.add(...props.creator.inputClasses)
-        if (props.creator.buttonClasses) timerCreatorButton.classList.add(...props.creator.buttonClasses)
+        const settings = [
+            this._generateSettingsCheckbox('autostop', 'Останавливать при добавлении нового', false),
+            this._generateSettingsCheckbox('stopOnReload', 'Останавливать при перезагрузке страницы', true),
+            this._generateSettingsCheckbox('oneplay', 'Только один активный', false),
+            this._generateSettingsCheckbox('replaceImport', 'Заменять при импорте', false),
+        ]
 
-        timerCreatorArea.appendChild(timerCreatorInputTitle)
-        timerCreatorArea.appendChild(timerCreatorButton)
-        baseArea.appendChild(timerCreatorArea)
-        baseArea.appendChild(timersArea)
+        // Добавляем настройки в коллекцию
+        settings.forEach((item) => {
+            settingsAreaGrid.appendChild(item)
+        })
+
+        const timerCreatorAreaElements = [
+            timerCreatorInputTitle,
+            timerCreatorButton,
+            exportButton,
+            importButton,
+            importInput,
+            settingsButton
+        ]
+
+        timerCreatorAreaElements.forEach((item) => {
+            timerCreatorArea.appendChild(item)
+        })
+
+        settingsArea.appendChild(settingsAreaGrid)
+
+        const baseAreaElements = [
+            timerCreatorArea,
+            settingsArea,
+            timersArea
+        ]
+
+        baseAreaElements.forEach((item) => {
+            baseArea.appendChild(item)
+        })
+
         document.body.appendChild(baseArea)
 
         return {
@@ -56,47 +134,39 @@ export default class UI {
             timerCreatorArea,
             timerCreatorInputTitle,
             timerCreatorButton,
+            exportButton,
+            importButton,
+            importInput,
+            settingsArea,
+            settingsButton,
             timersArea
         }
     }
 
     renderTimerDOM(timerID, props) {
-        const timerArea = document.createElement('div')
-        const timerTitle = document.createElement('div')
-        const timerTitleInput = document.createElement('input')
+        const timerArea = this._generateElement('div', 'timer')
+        const timerTitleInput = this._generateElement('input', 'timer__title-input')
         const timerTitleValue = this.timerCreatorInputTitle.value.trim()
-        const timerResult = document.createElement('div')
-        const timerPlayPause = document.createElement('div')
-        const timerRemove = document.createElement('div')
-        const timerRestart = document.createElement('div')
+        const timerResult = this._generateElement('div', 'timer__result', { innerText: '00:00:00 — 0.00' })
+        const timerPlayPause = this._generateElement('div', ['timer__button', 'timer__button_playpause', 'timer__button_playpause-paused'])
+        const timerRemove = this._generateElement('div', ['timer__button', 'timer__button_remove'])
+        const timerRestart = this._generateElement('div', ['timer__button', 'timer__button_restart'])
 
         timerArea.dataset.id = timerID
-        timerResult.innerText = `00:00:00 — 0.00`
         timerTitleInput.value = timerTitleValue.length ? timerTitleValue : (props.defaultTitle ? props.defaultTitle : 'Untitled')
-        timerTitle.innerText = timerTitleValue.length ? timerTitleValue : (props.defaultTitle ? props.defaultTitle : 'Untitled')
 
-        timerArea.classList.add('timer')
-        timerTitleInput.classList.add('timer__title-input')
-        timerTitle.classList.add('timer__title')
-        timerResult.classList.add('timer__result')
-        timerPlayPause.classList.add('timer__button', 'timer__button_playpause', 'timer__button_playpause-paused')
-        timerRemove.classList.add('timer__button', 'timer__button_remove')
-        timerRestart.classList.add('timer__button', 'timer__button_restart')
+        const timerAreaElements = [
+            timerTitleInput,
+            timerPlayPause,
+            timerResult,
+            timerRestart,
+            timerRemove
+        ]
 
-        if (props.areaClasses) timerArea.classList.add(...props.areaClasses)
-        if (props.titleInputClasses) timerTitleInput.classList.add(...props.titleInputClasses)
-        if (props.titleClasses) timerTitle.classList.add(...props.titleClasses)
-        if (props.resultClasses) timerResult.classList.add(...props.resultClasses)
-        if (props.playPauseClasses) timerPlayPause.classList.add(...props.playPauseClasses)
-        if (props.removeClasses) timerRemove.classList.add(...props.removeClasses)
-        if (props.restartClasses) timerRestart.classList.add(...props.restartClasses)
+        timerAreaElements.forEach((item) => {
+            timerArea.appendChild(item)
+        })
 
-        timerArea.appendChild(timerTitleInput)
-        timerArea.appendChild(timerTitle)
-        timerArea.appendChild(timerPlayPause)
-        timerArea.appendChild(timerResult)
-        timerArea.appendChild(timerRestart)
-        timerArea.appendChild(timerRemove)
         this.timersArea.appendChild(timerArea)
 
         this.clearCreatorTimerTitle()
@@ -104,11 +174,10 @@ export default class UI {
         return {
             timerArea,
             timerTitleInput,
-            timerTitle,
-            timerResult,
             timerPlayPause,
-            timerRemove,
-            timerRestart
+            timerResult,
+            timerRestart,
+            timerRemove
         }
     }
 
