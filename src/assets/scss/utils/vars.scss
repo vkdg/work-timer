@@ -7,6 +7,8 @@ $color_button_border: rgba(27, 31, 36, 0.15);
 $color_button_bg: #f6f8fa;
 $color_button_bg_hover: #f3f4f6;
 
+$color_accent: #69c;
+
 :root {
     --color-bg: #{$color_bg};
     --color-bg-default: #{$color_bg_default};
@@ -17,4 +19,6 @@ $color_button_bg_hover: #f3f4f6;
     --color-border-buttons: #{$color_button_border};
 
     --color-text-buttons: #{$color_button_text};
+
+    --color-accent: #{$color_accent};
 }

@@ -58,11 +58,7 @@ module.exports = {
             directory: path.join(__dirname, 'docs'),
             serveIndex: true
         },
-        open: {
-            app: {
-                name: 'firefox',
-            },
-        }
+        open: true,
     },
     module: {
         rules: [{
