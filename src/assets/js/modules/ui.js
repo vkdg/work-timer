@@ -180,13 +180,4 @@ export default class UI {
             timerRemove
         }
     }
-
-    renderTimersHistoryDOM(baseArea, props) {
-        const historyArea = document.createElement('div')
-        historyArea.classList.add('history')
-
-        baseArea.appendChild(historyArea)
-
-        return historyArea
-    }
 }
