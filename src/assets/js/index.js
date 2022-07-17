@@ -4,30 +4,18 @@ import 'css/styles.scss'
 import UI from 'js/modules/ui'
 import Timer from 'js/modules/timer'
 import Storage from 'js/modules/storage'
-import History from './modules/history'
 
 const ui = new UI()
 const timers = new Map()
 const storage = new Storage()
-// const history = new History()
 
 let timerID = 0
-// let historyDOM = undefined
 
 const storageAvailable = storage.available
 
 
 const createTimer = () => {
-    const timerDOM = ui.renderTimerDOM(timerID, {
-        areaClasses: false, // array of strings || false
-        titleInputClasses: false, // array of strings || false
-        titleClasses: false, // array of strings || false
-        defaultTitle: false, // string || false
-        resultClasses: false, // array of strings || false
-        playPauseClasses: false, // array of strings || false
-        removeClasses: false, // array of strings || false
-        restartClasses: false, // array of strings || false
-    })
+    const timerDOM = ui.renderTimerDOM(timerID, {})
     const timer = new Timer(timerDOM.timerTitleInput.value)
 
     timers.set(timerID, { timerDOM, controls: timer })
@@ -111,16 +99,7 @@ const createTimersBackup = (toExport = false) => {
 const generateTimersFromBackup = (timersBackup) => {
     try {
         timersBackup.forEach((item, index) => {
-            const timerDOM = ui.renderTimerDOM(index, {
-                areaClasses: false,
-                titleInputClasses: false,
-                titleClasses: false,
-                defaultTitle: item.title,
-                resultClasses: false,
-                playPauseClasses: false,
-                removeClasses: false,
-                restartClasses: false,
-            })
+            const timerDOM = ui.renderTimerDOM(index, { defaultTitle: item.title })
 
             const timer = new Timer(item.title, item.duration)
 
@@ -182,20 +161,7 @@ const exportTimers = () => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const elements = ui.renderBaseDOM({
-        base: {
-            areaClasses: false, // array of strings || false
-        },
-        creator: {
-            areaClasses: false, // array of strings || false
-            inputClasses: false, // array of strings || false
-            inputPlaceholder: "Название таймера", // string || false,
-            buttonClasses: false, // array of strings || false
-            buttonText: false, // string || false
-            importButtonClasses: false, // array of strings || false
-            exportButtonClasses: false, // array of strings || false
-        }
-    })
+    const elements = ui.renderBaseDOM()
 
     document.addEventListener('keypress', e => {
         const target = e.target
@@ -208,8 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     })
-
-    // historyDOM = ui.renderTimersHistoryDOM(elements.baseArea)
 
     // Загрузка сохраненных таймеров
     if (storageAvailable) {
