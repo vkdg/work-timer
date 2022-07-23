@@ -2,14 +2,21 @@ $color_bg: #f6f8fa;
 $color_bg_default: #ffffff;
 $color_border: rgba(27, 31, 36, 0.15);
 
+$color_text: #000000;
+$color_text_light: #414141;
+
 $color_button_text: #000000;
 $color_button_border: rgba(27, 31, 36, 0.15);
 $color_button_bg: #f6f8fa;
 $color_button_bg_hover: #f3f4f6;
 
 $color_accent: #69c;
+$color_accent_hover: darken(#69c, 5);
 
 :root {
+    --color-text: #{$color_text};
+    --color-text-light: #{$color_text_light};
+
     --color-bg: #{$color_bg};
     --color-bg-default: #{$color_bg_default};
     --color-bg-buttons: #{$color_button_bg};
@@ -21,4 +28,5 @@ $color_accent: #69c;
     --color-text-buttons: #{$color_button_text};
 
     --color-accent: #{$color_accent};
+    --color-accent-hover: #{$color_accent_hover};
 }
