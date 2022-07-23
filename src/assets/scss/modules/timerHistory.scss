@@ -1,0 +1,49 @@
+.timersArea {
+
+    .history {
+        border-top: 1px solid var(--color-border);
+        background-color: var(--color-bg-default);
+        padding: 10px 0;
+        max-height: 300px;
+        overflow: auto;
+        border-radius: 0 0 6px 6px;
+        display: none;
+    }
+
+    .history__item {
+        display: grid;
+        grid-template-columns: 16px 1fr;
+        padding: 5px 17px;
+        grid-column-gap: 15px;
+        grid-row-gap: 5px;
+        grid-template-areas:
+            'history_dot history_text'
+            'history_dot history_date';
+
+        .history__item-dot {
+            grid-area: history_dot;
+            width: 16px;
+            height: 16px;
+            display: block;
+            border-radius: 10em;
+            border: 3px solid var(--color-border);
+        }
+
+        .history__item-text {
+            grid-area: history_text;
+            font-size: 15px;
+            line-height: 16px;
+            display: block;
+        }
+
+        .history__item-date {
+            grid-area: history_date;
+            font-size: 9px;
+            line-height: 12px;
+            font-style: italic;
+            display: block;
+            opacity: 0.5;
+            color: var(--color-text-light);
+        }
+    }
+}

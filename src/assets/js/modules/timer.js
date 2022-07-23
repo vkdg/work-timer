@@ -52,6 +52,10 @@ export default class Timer {
         return false
     }
 
+    get getTitle() {
+        return this.#title
+    }
+
     get timeForReload() {
         return this.#getTimeString(Date.now() - this.#started - this.#paused)
     }
@@ -72,6 +76,14 @@ export default class Timer {
 
     set title(newTitle) {
         this.#title = newTitle
+    }
+
+    pause() {
+        const now = Date.now()
+
+        if (this.#activated && !this.#pauseStarted) {
+            this.#pauseStarted = now
+        }
     }
 
     playPause() {

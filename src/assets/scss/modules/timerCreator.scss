@@ -3,9 +3,9 @@
         padding: 10px;
         display: grid;
         grid-template-areas:
-            "title title title title"
-            "create export import settings";
-        grid-template-columns: 1fr repeat(3, auto);
+            "title title title title title"
+            "create_button export_button import_button history_button settings_button";
+        grid-template-columns: 1fr repeat(4, auto);
         grid-column-gap: 10px;
         grid-row-gap: 10px;
 
@@ -19,56 +19,9 @@
             grid-area: title;
         }
 
-        &__button {
-            padding: 10px;
-            font-size: 13px;
-            font-weight: 500;
-            padding: 5px 16px;
-            background-color: var(--color-bg-buttons);
-            background-repeat: no-repeat;
-            border: 1px solid var(--color-border-buttons);
-            border-radius: 6px;
-            color: var(--color-text-buttons);
-            transition-property: color, background-color, box-shadow, border-color;
-            transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
-            transition-duration: 80ms;
-            min-height: 29px;
-
-            &:hover {
-                cursor: pointer;
-                background-color: var(--color-bg-buttons-hover);
-            }
-
-            &-with-icon {
-                display: inline-grid;
-                grid-template-columns: 15px 1fr;
-                grid-gap: 5px;
-                align-items: center;
-                line-height: 1;
-
-                &::before {
-                    content: '';
-                    width: 15px;
-                    height: 15px;
-                    background-repeat: no-repeat;
-                    background-size: contain;
-                    background-position: center center;
-                }
-            }
-
-            &-import,
-            &-export,
-            &-settings {
-                background-position: center center;
-                background-size: 15px;
-                align-self: stretch;
-                justify-self: flex-start;
-            }
-
+        &__btn {
             &-create {
-                grid-area: create;
-                align-self: stretch;
-                justify-self: flex-start;
+                grid-area: create_button;
 
                 &::before {
                     background-image: url(~img/plus.svg);
@@ -76,7 +29,7 @@
             }
 
             &-import {
-                grid-area: import;
+                grid-area: import_button;
 
                 &::before {
                     background-image: url(~img/download.svg);
@@ -84,21 +37,32 @@
             }
 
             &-export {
-                grid-area: export;
+                grid-area: export_button;
 
                 &::before {
                     background-image: url(~img/upload.svg);
                 }
             }
 
-            &-settings {
-                background-image: url(~img/settings.svg);
-                grid-area: settings;
-                justify-self: flex-end;
+            &-history {
+                grid-area: history_button;
 
-                &.creator__button-settings_active {
-                    background-image: url(~img/settings-white.svg);
+                &::before {
+                    background-image: url(~img/history.svg);
+                }
+            }
+
+            &-settings {
+                grid-area: settings_button;
+                background-image: url(~img/settings.svg);
+
+                &_active {
                     background-color: var(--color-accent);
+                    background-image: url(~img/settings-white.svg);
+
+                    &:hover {
+                        background-color: var(--color-accent-hover);
+                    }
                 }
             }
         }
@@ -113,14 +77,14 @@
     .timersArea {
 
         .creator {
-            grid-template-columns: 1fr repeat(2, 39px);
-            grid-template-areas: 'title create settings';
+            grid-template-columns: 1fr repeat(3, 39px);
+            grid-template-areas: 'title create_button history_button settings_button';
 
             &__title {
                 margin-bottom: 0;
             }
 
-            &__button {
+            &__btn {
                 justify-self: stretch;
                 align-self: stretch;
 

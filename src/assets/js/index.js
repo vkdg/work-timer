@@ -1,14 +1,20 @@
 // Include styles
 import 'css/styles.scss'
 
+// Include scripts
 import UI from 'js/modules/ui'
 import Timer from 'js/modules/timer'
 import Storage from 'js/modules/storage'
+import SettingsStorage from 'js/modules/settings.storage'
+import History from 'js/modules/history'
 
 const ui = new UI()
 const timers = new Map()
 const storage = new Storage()
+const settingsStorage = new SettingsStorage()
+let history = undefined
 
+let baseDOM = undefined
 let timerID = 0
 
 const storageAvailable = storage.available
@@ -18,12 +24,24 @@ const createTimer = () => {
     const timerDOM = ui.renderTimerDOM(timerID, {})
     const timer = new Timer(timerDOM.timerTitleInput.value)
 
+    const stopOthers = baseDOM.settingsAutostop.querySelector('input').checked
+
     timers.set(timerID, { timerDOM, controls: timer })
 
     timerDOM.timerPlayPause.addEventListener('click', startStopTimer.bind(undefined, timer, timerDOM))
     timerDOM.timerRestart.addEventListener('click', restartTimer.bind(undefined, timer, timerDOM))
     timerDOM.timerRemove.addEventListener('click', removeTimer.bind(undefined, timerID))
     timerDOM.timerTitleInput.addEventListener('keyup', updateTimerTitle.bind(undefined, timer, timerDOM))
+
+    if (stopOthers) {
+        for (const key of timers.keys()) {
+            const currentTimer = timers.get(key)
+            currentTimer.controls.pause()
+            currentTimer.timerDOM.timerPlayPause.classList.add('timer__button_playpause-paused')
+        }
+
+        history.add(`Таймеры остановлены после добавления нового`)
+    }
 
     timerID++
 }
@@ -51,12 +69,14 @@ const startStopTimer = (timer, timerDOM) => {
 
     if (timer.isPaused) {
         timerDOM.timerPlayPause.classList.add('timer__button_playpause-paused')
+        history.add(`Таймер <strong>&laquo;${timer.getTitle}&raquo;</strong> остановлен`)
     } else {
         timerDOM.timerPlayPause.classList.remove('timer__button_playpause-paused')
+        history.add(`Таймер <strong>&laquo;${timer.getTitle}&raquo;</strong> запущен`)
     }
 }
 
-const removeTimer = id => {
+const removeTimer = (id, disableConfirm = false) => {
     if (confirm('Вы уверены, что хотите удалить таймер?')) {
         timers.delete(id)
         ui.removeTimer(id)
@@ -73,6 +93,7 @@ const updateTimers = () => {
         }
 
         createTimersBackup()
+        createSettingsBackup()
     }, 1000);
 }
 
@@ -96,24 +117,83 @@ const createTimersBackup = (toExport = false) => {
     return false
 }
 
-const generateTimersFromBackup = (timersBackup) => {
+const createSettingsBackup = () => {
+    const autoStop = baseDOM.settingsAutostop.querySelector('input').checked
+    const stopOnReload = baseDOM.settingsStopOnReload.querySelector('input').checked
+    const onePlay = baseDOM.settingsOnePlay.querySelector('input').checked
+    const replaceImport = baseDOM.settingsReplaceImport.querySelector('input').checked
+
+    const settings = {
+        autoStop,
+        stopOnReload,
+        onePlay,
+        replaceImport
+    }
+
+    settingsStorage.save(settings)
+}
+
+const restoreSettingsFromBackup = (settingsBackup) => {
     try {
+        console.log(settingsBackup)
+        if (settingsBackup.autoStop) {
+            baseDOM.settingsAutostop.querySelector('input').checked = true
+        } else {
+            baseDOM.settingsAutostop.querySelector('input').checked = false
+        }
+        if (settingsBackup.stopOnReload) {
+            baseDOM.settingsStopOnReload.querySelector('input').checked = true
+        } else {
+            baseDOM.settingsStopOnReload.querySelector('input').checked = false
+        }
+        if (settingsBackup.onePlay) {
+            baseDOM.settingsOnePlay.querySelector('input').checked = true
+        } else {
+            baseDOM.settingsOnePlay.querySelector('input').checked = false
+        }
+        if (settingsBackup.replaceImport) {
+            baseDOM.settingsReplaceImport.querySelector('input').checked = true
+        } else {
+            baseDOM.settingsReplaceImport.querySelector('input').checked = false
+        }
+    } catch (e) {
+        throw new Error(e)
+    }
+}
+
+const generateTimersFromBackup = (timersBackup) => {
+    const replaceImport = baseDOM.settingsReplaceImport.querySelector('input').checked
+
+    try {
+        if (replaceImport) {
+            for (const key of timers.keys()) {
+                timers.delete(key)
+                ui.removeTimer(key)
+            }
+        }
+
         timersBackup.forEach((item, index) => {
             const timerDOM = ui.renderTimerDOM(index, { defaultTitle: item.title })
 
             const timer = new Timer(item.title, item.duration)
 
-            timers.set(index, { timerDOM, controls: timer })
+            timers.set(timerID, { timerDOM, controls: timer })
 
             timerDOM.timerPlayPause.addEventListener('click', startStopTimer.bind(undefined, timer, timerDOM))
             timerDOM.timerRestart.addEventListener('click', restartTimer.bind(undefined, timer, timerDOM))
             timerDOM.timerRemove.addEventListener('click', removeTimer.bind(undefined, index))
             timerDOM.timerTitleInput.addEventListener('keyup', updateTimerTitle.bind(undefined, timer, timerDOM))
 
-            timerDOM.timerResult.innerText = timer.timeForReload.length > 18 ? '00:00:00 — 0.00' : timer.timeForReload
+            const displayTime = timer.timeForReload.length > 18 ? '00:00:00 — 0.00' : timer.timeForReload
+
+            timerDOM.timerResult.innerText = displayTime
+
+            history.add(`Таймер <strong>&laquo;${item.title}&raquo;</strong> восстановлен из резервной копии с значением <nobr>${displayTime}</nobr>`)
 
             timerID++
         })
+
+        history.add('Таймеры восстановлены из локального хранилища')
     } catch (e) {
         throw new Error(e)
     }
@@ -132,6 +212,8 @@ const importTimersFromFile = (e) => {
             const timersBackup = JSON.parse(reader.result)
             if (timersBackup.length > 0) generateTimersFromBackup(timersBackup)
         }
+
+        input.value = ''
     }
 }
 
@@ -163,6 +245,10 @@ const exportTimers = () => {
 document.addEventListener('DOMContentLoaded', () => {
     const elements = ui.renderBaseDOM()
 
+    baseDOM = elements
+
+    history = new History(baseDOM.historyArea)
+
     document.addEventListener('keypress', e => {
         const target = e.target
         if (e.key === "Enter") {
@@ -175,10 +261,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    // Загрузка сохраненных таймеров
+    // Загрузка сохраненных таймеров и настроек
     if (storageAvailable) {
         const timersBackup = JSON.parse(storage.data)
         if (timersBackup.length > 0) generateTimersFromBackup(timersBackup)
+
+        const settingsBackup = JSON.parse(settingsStorage.data)
+        if (settingsBackup) restoreSettingsFromBackup(settingsBackup)
     }
 
     elements.importButton.addEventListener('click', () => { elements.importInput.click() })
@@ -187,7 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.importInput.addEventListener('change', importTimersFromFile)
     elements.settingsButton.addEventListener('click', () => {
         elements.settingsArea.classList.toggle('settings-active')
-        elements.settingsButton.classList.toggle('creator__button-settings_active')
+        elements.settingsButton.classList.toggle('creator__btn-settings_active')
     })
+
     updateTimers()
 })

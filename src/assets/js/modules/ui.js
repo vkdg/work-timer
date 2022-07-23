@@ -3,6 +3,7 @@ export default class UI {
         this.baseArea = undefined
         this.timersArea = undefined
         this.timerCreatorInputTitle = undefined
+        this.historyArea = undefined
     }
 
     clearCreatorTimerTitle() {
@@ -51,8 +52,16 @@ export default class UI {
                 element.innerText = props.innerText ?? null
                 break
             case 'button':
+                let textWrapperElement = false
+                if (props.innerText) textWrapperElement = document.createElement('span')
                 element.type = props.type ?? 'button'
-                element.innerText = props.innerText ?? null
+
+                if (textWrapperElement) {
+                    textWrapperElement.innerText = props.innerText
+                    element.appendChild(textWrapperElement)
+                }
+
+                break
         }
 
         return element
@@ -73,14 +82,16 @@ export default class UI {
         const baseArea = this._generateElement('div', 'timersArea')
         const timerCreatorArea = this._generateElement('div', 'creator')
         const timerCreatorInputTitle = this._generateElement('input', 'creator__title', { type: 'text', autocomplete: 'off', placeholder: 'Название таймера' })
-        const timerCreatorButton = this._generateElement('button', ['creator__button', 'creator__button-create', 'creator__button-with-icon'], { innerText: 'Создать' })
+        const timerCreatorButton = this._generateElement('button', ['creator__btn-create', 'btn', 'btn_text-icon'], { innerText: 'Создать' })
         const timersArea = this._generateElement('div', 'timers')
-        const exportButton = this._generateElement('button', ['creator__button', 'creator__button-export', 'creator__button-with-icon'], { innerText: 'Выгрузить' })
-        const importButton = this._generateElement('button', ['creator__button', 'creator__button-import', 'creator__button-with-icon'], { innerText: 'Загрузить' })
+        const exportButton = this._generateElement('button', ['creator__btn-export', 'btn', 'btn_text-icon'], { innerText: 'Выгрузить' })
+        const importButton = this._generateElement('button', ['creator__btn-import', 'btn', 'btn_text-icon'], { innerText: 'Загрузить' })
         const importInput = this._generateElement('input', 'creator__file', { type: 'file', multiple: false, accept: '.json' })
-        const settingsButton = this._generateElement('button', ['creator__button', 'creator__button-settings'])
+        const settingsButton = this._generateElement('button', ['creator__btn-settings', 'btn', 'btn_icon'])
         const settingsArea = this._generateElement('div', 'settings')
         const settingsAreaGrid = this._generateElement('div', 'settings__grid')
+        const historyButton = this._generateElement('button', ['creator__btn-history', 'btn', 'btn_text-icon'], { innerText: 'История' })
+        const historyArea = this._generateElement('div', ['history'])
 
         this.baseArea = baseArea
 
@@ -89,6 +100,7 @@ export default class UI {
 
 
         this.timersArea = timersArea
+        this.historyArea = historyArea
 
         const settings = [
             this._generateSettingsCheckbox('autostop', 'Останавливать при добавлении нового', false),
@@ -108,6 +120,7 @@ export default class UI {
             exportButton,
             importButton,
             importInput,
+            historyButton,
             settingsButton
         ]
 
@@ -120,7 +133,8 @@ export default class UI {
         const baseAreaElements = [
             timerCreatorArea,
             settingsArea,
-            timersArea
+            timersArea,
+            historyArea
         ]
 
         baseAreaElements.forEach((item) => {
@@ -138,7 +152,13 @@ export default class UI {
             importButton,
             importInput,
             settingsArea,
+            settingsAutostop: settings[0],
+            settingsStopOnReload: settings[1],
+            settingsOnePlay: settings[2],
+            settingsReplaceImport: settings[3],
             settingsButton,
+            historyButton,
+            historyArea,
             timersArea
         }
     }
@@ -179,5 +199,11 @@ export default class UI {
             timerRestart,
             timerRemove
         }
+    }
+
+    addHistoryItem(html) {
+        const element = this._generateElement('div', ['history__item'])
+        element.insertAdjacentHTML('afterbegin', html)
+        this.historyArea.insertAdjacentHTML('afterbegin', element)
     }
 }
