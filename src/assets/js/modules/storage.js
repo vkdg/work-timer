@@ -25,8 +25,8 @@ export default class TimerStorage {
 
     /**
      * Сохраняет массив в виде JSON строки в localStorage
-     * 
-     * @param {Array} data 
+     *
+     * @param {Array} data
      */
     save(timers) {
         const data = JSON.stringify(timers)

@@ -25,7 +25,7 @@ export default class SettingsStorage {
 
     /**
      * Сохраняет массив настроек в виде JSON строки в localStorage
-     * 
+     *
      * @param {Array} settings
      */
     save(settings) {
