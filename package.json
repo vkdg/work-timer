@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --mode production",
-    "dev": "webpack serve"
+    "dev": "webpack serve",
+    "test": "editorconfig-checker"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
@@ -14,6 +15,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
     "dotenv": "^16.0.1",
+    "editorconfig-checker": "^4.0.2",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
     "postcss-loader": "^7.0.0",
