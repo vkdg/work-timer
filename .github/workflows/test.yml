@@ -3,8 +3,7 @@ name: Tests
 on:
   pull_request:
   push:
-    branches:
-      - actions
+    branches: [main, dev]
 
 jobs:
   editorconfig:
