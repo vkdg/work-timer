@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --mode production",
-    "dev": "webpack serve"
+    "dev": "webpack serve",
+    "test": "editorconfig-checker"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
