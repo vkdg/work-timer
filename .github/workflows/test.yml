@@ -25,5 +25,5 @@ jobs:
           else
           npm i
           fi
-      - name: Run test
+      - name: Tests run
         run: npm run test
