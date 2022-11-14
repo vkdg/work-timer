@@ -11,8 +11,11 @@ charset = utf-8
 [*.{json,yml}]
 indent_size = 2
 
-[*.{env,gitignore,md,html}]
+[*.{env,gitignore,html}]
 insert_final_newline = false
+
+[*.{md}]
+insert_final_newline = true
 
 [/docs/**]
 charset = unset
