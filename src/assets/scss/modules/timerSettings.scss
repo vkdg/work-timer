@@ -61,10 +61,8 @@
     }
 
     .settings__item-input {
-
         &:checked {
-            &+.settings__item-text {
-
+            & + .settings__item-text {
                 &::after {
                     top: 4px;
                     left: 4px;
@@ -74,7 +72,7 @@
                     border-width: 0 0 3px 3px;
                     border-radius: 0 0 0 2px;
                     transform: rotate(-45deg);
-                    border-color: #6699CC;
+                    border-color: #6699cc;
                 }
             }
         }

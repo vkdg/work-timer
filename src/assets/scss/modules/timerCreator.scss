@@ -2,98 +2,102 @@
     .creator {
         padding: 10px;
         display: grid;
+        // grid-template-areas:
+        //    "title title title title title"
+        //    "create_button export_button import_button history_button settings_button";
         grid-template-areas:
-            "title title title title title"
-            "create_button export_button import_button history_button settings_button";
+            'title title title title'
+            'create_button export_button import_button settings_button';
         grid-template-columns: 1fr repeat(4, auto);
         grid-column-gap: 10px;
         grid-row-gap: 10px;
+    }
 
-        &__title {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            color: var(--color-text);
-            background-color: var(--color-bg-default);
-            font-size: 14px;
-            grid-area: title;
-        }
+    .creator__btn {
+        &-create {
+            grid-area: create_button;
 
-        &__btn {
-            &-create {
-                grid-area: create_button;
-
-                &::before {
-                    background-image: url(~img/plus.svg);
-                }
-            }
-
-            &-import {
-                grid-area: import_button;
-
-                &::before {
-                    background-image: url(~img/download.svg);
-                }
-            }
-
-            &-export {
-                grid-area: export_button;
-
-                &::before {
-                    background-image: url(~img/upload.svg);
-                }
-            }
-
-            &-history {
-                grid-area: history_button;
-
-                &::before {
-                    background-image: url(~img/history.svg);
-                }
-            }
-
-            &-settings {
-                grid-area: settings_button;
-                background-image: url(~img/settings.svg);
-
-                &_active {
-                    background-color: var(--color-accent);
-                    background-image: url(~img/settings-white.svg);
-
-                    &:hover {
-                        background-color: var(--color-accent-hover);
-                    }
-                }
+            &::before {
+                background-image: url(~img/plus.svg);
             }
         }
 
-        &__file {
+        &-import {
+            grid-area: import_button;
+
+            &::before {
+                background-image: url(~img/download.svg);
+            }
+        }
+
+        &-export {
+            grid-area: export_button;
+
+            &::before {
+                background-image: url(~img/upload.svg);
+            }
+        }
+
+        &-history {
             display: none;
+            grid-area: history_button;
+
+            &::before {
+                background-image: url(~img/history.svg);
+            }
         }
+
+        &-settings {
+            grid-area: settings_button;
+            background-image: url(~img/settings.svg);
+        }
+
+        &-settings_active {
+            background-color: var(--color-accent);
+            background-image: url(~img/settings-white.svg);
+
+            &:hover {
+                background-color: var(--color-accent-hover);
+            }
+        }
+    }
+
+    .creator__title {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid var(--color-border);
+        color: var(--color-text);
+        background-color: var(--color-bg-default);
+        font-size: 14px;
+        grid-area: title;
+    }
+
+    .creator__file {
+        display: none;
     }
 }
 
 @include mobile {
     .timersArea {
-
         .creator {
             grid-template-columns: 1fr repeat(3, 39px);
-            grid-template-areas: 'title create_button history_button settings_button';
+            // grid-template-areas: 'title create_button history_button settings_button';
+            grid-template-areas: 'title create_button settings_button';
+        }
 
-            &__title {
-                margin-bottom: 0;
-            }
+        .creator__title {
+            margin-bottom: 0;
+        }
 
-            &__btn {
-                justify-self: stretch;
-                align-self: stretch;
+        .creator__btn {
+            justify-self: stretch;
+            align-self: stretch;
 
-                &-import,
-                &-export {
-                    display: none;
-                }
+            &-import,
+            &-export {
+                display: none;
             }
         }
     }
@@ -101,28 +105,34 @@
 
 @include night {
     .timersArea {
-        .creator__btn-create {
-            &::before {
-                background-image: url(~img/plus-white.svg);
+        .creator__btn {
+            &-create {
+                &::before {
+                    background-image: url(~img/plus-white.svg);
+                }
             }
-        }
-        .creator__btn-export {
-            &::before {
-                background-image: url(~img/upload-white.svg);
+
+            &-export {
+                &::before {
+                    background-image: url(~img/upload-white.svg);
+                }
             }
-        }
-        .creator__btn-import {
-            &::before {
-                background-image: url(~img/download-white.svg);
+
+            &-import {
+                &::before {
+                    background-image: url(~img/download-white.svg);
+                }
             }
-        }
-        .creator__btn-history {
-            &::before {
-                background-image: url(~img/history-white.svg);
+
+            &-history {
+                &::before {
+                    background-image: url(~img/history-white.svg);
+                }
             }
-        }
-        .creator__btn-settings {
-            background-image: url(~img/settings-white.svg);
+
+            &-settings {
+                background-image: url(~img/settings-white.svg);
+            }
         }
     }
 }
