@@ -98,3 +98,31 @@
         }
     }
 }
+
+@include night {
+    .timersArea {
+        .creator__btn-create {
+            &::before {
+                background-image: url(~img/plus-white.svg);
+            }
+        }
+        .creator__btn-export {
+            &::before {
+                background-image: url(~img/upload-white.svg);
+            }
+        }
+        .creator__btn-import {
+            &::before {
+                background-image: url(~img/download-white.svg);
+            }
+        }
+        .creator__btn-history {
+            &::before {
+                background-image: url(~img/history-white.svg);
+            }
+        }
+        .creator__btn-settings {
+            background-image: url(~img/settings-white.svg);
+        }
+    }
+}

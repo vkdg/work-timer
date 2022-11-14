@@ -1,6 +1,6 @@
 .timersArea {
     .settings {
-        background-color: white;
+        background-color: var(--color-bg);
         border-top: 1px solid var(--color-border);
         display: none;
 
@@ -29,6 +29,7 @@
         padding-left: 27px;
         line-height: 20px;
         font-size: 14px;
+        color: var(--color-text);
 
         &::before {
             content: '';
