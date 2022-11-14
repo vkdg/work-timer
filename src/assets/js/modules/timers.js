@@ -198,7 +198,7 @@ export default class Timers extends Base {
         // Добавляем отслеживания событий таймера
         timerUI.playpause.addEventListener(
             'click',
-            this.timerStartStop.bind(this, timer, timerUI)
+            this.timerStartStop.bind(this, timer, timerUI, this.#timerID)
         );
         timerUI.remove.addEventListener(
             'click',
@@ -344,8 +344,21 @@ export default class Timers extends Base {
     /**
      * Запускает/останавливает таймер
      */
-    timerStartStop(timer, timerUI) {
+    timerStartStop(timer, timerUI, timerID) {
         timer.playPause();
+
+        // Если включена настройка "Один активный", пробегаемся по таймерам и стопаем их
+        if (this.$settingOnePlay.checked && !timer.isPaused) {
+            for (const key of this.timers.keys()) {
+                const currentTimer = this.timers.get(key);
+                if (!currentTimer.controls.isPaused && key != timerID) {
+                    currentTimer.controls.pause();
+                    currentTimer.ui.playpause.classList.add(
+                        'timer__button_playpause-paused'
+                    );
+                }
+            }
+        }
 
         if (timer.isPaused) {
             timerUI.playpause.classList.add('timer__button_playpause-paused');
@@ -438,7 +451,6 @@ export default class Timers extends Base {
             replaceImport: this.$settingReplaceImport.checked,
         };
 
-        console.log(JSON.stringify(settings));
         this.setStorageData(settings, 'settings');
     }
 
@@ -449,8 +461,7 @@ export default class Timers extends Base {
      */
     generateTimersFromBackup(timersBackup) {
         try {
-            timersBackup.forEach((item, index) => {
-                console.log(item);
+            timersBackup.forEach((item) => {
                 // Генерируем экземпляр таймера
                 const timer = new this.timer(item.title, item.duration);
 
@@ -471,7 +482,12 @@ export default class Timers extends Base {
                 // Добавляем отслеживание событий таймера
                 timerUI.playpause.addEventListener(
                     'click',
-                    this.timerStartStop.bind(this, timer, timerUI)
+                    this.timerStartStop.bind(
+                        this,
+                        timer,
+                        timerUI,
+                        this.#timerID
+                    )
                 );
                 timerUI.remove.addEventListener(
                     'click',
