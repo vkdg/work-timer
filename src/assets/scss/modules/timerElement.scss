@@ -40,6 +40,24 @@
                 }
             }
 
+            .timer__link-input {
+                display: none;
+                margin-bottom: 10px;
+                font-weight: bold;
+                width: 100%;
+                color: var(--color-text);
+                background-color: transparent;
+                border: none;
+                font-size: 11px;
+                text-decoration: underline dotted;
+                padding: 3px 0;
+                cursor: pointer;
+
+                &:focus {
+                    text-decoration: none;
+                }
+            }
+
             .timer__result {
                 color: var(--color-text);
                 margin-right: 15px;
@@ -113,7 +131,6 @@
         }
     }
 }
-
 
 @include night {
     .timersArea {

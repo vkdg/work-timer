@@ -446,9 +446,9 @@ export default class Timers extends Base {
     createSettingsBackup(toExport = false) {
         const settings = {
             autostop: this.$settingAutostop.checked,
-            stopOnReload: this.$settingStopOnReload.checked,
+            // stopOnReload: this.$settingStopOnReload.checked,
             onePlay: this.$settingOnePlay.checked,
-            replaceImport: this.$settingReplaceImport.checked,
+            // replaceImport: this.$settingReplaceImport.checked,
         };
 
         this.setStorageData(settings, 'settings');
