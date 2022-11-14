@@ -45,6 +45,26 @@ export default class Timers extends Base {
             '[data-js="settings-button"]',
             this.$creatorArea
         );
+        // Настройка "Останавливать при добавлении нового"
+        this.$settingAutostop = this.qs(
+            '[name="settings-autostop"]',
+            this.$settingsArea
+        );
+        // Настройка "Останавливать при перезагрузке страницы"
+        this.$settingStopOnReload = this.qs(
+            '[name="settings-stopOnReload"]',
+            this.$settingsArea
+        );
+        // Настройка "Только один активный"
+        this.$settingOnePlay = this.qs(
+            '[name="settings-oneplay"]',
+            this.$settingsArea
+        );
+        // Настройка "Заменять при импорте"
+        this.$settingReplaceImport = this.qs(
+            '[name="settings-replaceImport"]',
+            this.$settingsArea
+        );
 
         // -- Инпуты
         // Инпут для заголовка нового таймера
@@ -66,6 +86,12 @@ export default class Timers extends Base {
                 const timersBackup = JSON.parse(this.getStorageData());
                 if (timersBackup.length > 0)
                     this.generateTimersFromBackup(timersBackup);
+
+                const settingsBackup = JSON.parse(
+                    this.getStorageData('settings')
+                );
+
+                this.restoreSettingsFromBackup(settingsBackup);
             }
         }
     }
@@ -187,6 +213,19 @@ export default class Timers extends Base {
             this.timerChangeTitle.bind(this, timer, timerUI)
         );
 
+        // Если установлена настройка "Останавливать при добавлении нового, останавливаем таймеры"
+        if (this.$settingAutostop.checked) {
+            for (const key of this.timers.keys()) {
+                const currentTimer = this.timers.get(key);
+                if (!currentTimer.controls.isPaused) {
+                    currentTimer.controls.pause();
+                    currentTimer.ui.playpause.classList.add(
+                        'timer__button_playpause-paused'
+                    );
+                }
+            }
+        }
+
         // Сбрасываем заголовок и увеличиваем счетчик
         this.$titleInput.value = '';
         this.#timerID++;
@@ -299,7 +338,7 @@ export default class Timers extends Base {
     updateStorage() {
         // TODO: Добавить сохранение настроек в локальное хранилище
         this.createTimersBackup();
-        // createSettingsBackup();
+        this.createSettingsBackup();
     }
 
     /**
@@ -386,6 +425,24 @@ export default class Timers extends Base {
     }
 
     /**
+     * Создает резервную копию настроек
+     *
+     * @param {Boolean} toExport Данные необходимы для экспорта?
+     * @returns {Boolean|Array} Данные с настройками или результат сохранения в хранилище
+     */
+    createSettingsBackup(toExport = false) {
+        const settings = {
+            autostop: this.$settingAutostop.checked,
+            stopOnReload: this.$settingStopOnReload.checked,
+            onePlay: this.$settingOnePlay.checked,
+            replaceImport: this.$settingReplaceImport.checked,
+        };
+
+        console.log(JSON.stringify(settings));
+        this.setStorageData(settings, 'settings');
+    }
+
+    /**
      * Генерирует таймеры из резервной копии
      *
      * @param {Array} timersBackup Массив с резервной копией таймеров
@@ -442,5 +499,19 @@ export default class Timers extends Base {
         } catch (e) {
             throw new Error(e);
         }
+    }
+
+    /**
+     * Восстанавливает настройки из резервной копии
+     *
+     * @param {Object} settingsBackup
+     */
+    restoreSettingsFromBackup(settingsBackup) {
+        if (settingsBackup.autostop) this.$settingAutostop.checked = true;
+        if (settingsBackup.stopOnReload)
+            this.$settingStopOnReload.checked = true;
+        if (settingsBackup.onePlay) this.$settingOnePlay.checked = true;
+        if (settingsBackup.replaceImport)
+            this.$settingReplaceImport.checked = true;
     }
 }

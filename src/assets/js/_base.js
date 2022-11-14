@@ -132,8 +132,8 @@ export default class Base {
     /**
      * Получает данные из локального хранилища
      */
-    getStorageData() {
-        return localStorage.getItem('timers') ?? false;
+    getStorageData(type = 'timers') {
+        return localStorage.getItem(type) ?? false;
     }
 
     /**
@@ -141,8 +141,8 @@ export default class Base {
      *
      * @param {Array} data Массив с таймерами
      */
-    setStorageData(timers) {
+    setStorageData(timers, type = 'timers') {
         const data = JSON.stringify(timers);
-        localStorage.setItem('timers', data);
+        localStorage.setItem(type, data);
     }
 }
