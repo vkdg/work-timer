@@ -1,14 +1,23 @@
 $color_bg: #f6f8fa;
+$color_bg_night: #202020;
 $color_bg_default: #ffffff;
+$color_bg_default_night: #181818;
 $color_border: rgba(27, 31, 36, 0.15);
+$color_border_night: rgba(136, 136, 136, 0.15);
 
 $color_text: #000000;
+$color_text_night: #bebebe;
 $color_text_light: #414141;
+$color_text_light_night: #9b9b9b;
 
 $color_button_text: #000000;
+$color_button_text_night: #bebebe;;
 $color_button_border: rgba(27, 31, 36, 0.15);
+$color_button_border_night: rgba(152, 152, 152, 0.15);
 $color_button_bg: #f6f8fa;
+$color_button_bg_night: #353535;
 $color_button_bg_hover: #f3f4f6;
+$color_button_bg_hover_night: #484848;
 
 $color_accent: #69c;
 $color_accent_hover: darken(#69c, 5);
@@ -29,4 +38,19 @@ $color_accent_hover: darken(#69c, 5);
 
     --color-accent: #{$color_accent};
     --color-accent-hover: #{$color_accent_hover};
+
+    @include night {
+        --color-text: #{$color_text_night};
+        --color-text-light: #{$color_text_light_night};
+
+        --color-bg: #{$color_bg_night};
+        --color-bg-default: #{$color_bg_default_night};
+        --color-bg-buttons: #{$color_button_bg_night};
+        --color-bg-buttons-hover: #{$color_button_bg_hover_night};
+
+        --color-border: #{$color_border_night};
+        --color-border-buttons: #{$color_button_border_night};
+
+        --color-text-buttons: #{$color_button_text_night};
+    }
 }
