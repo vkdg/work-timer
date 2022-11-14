@@ -6,6 +6,7 @@
         background-color: var(--color-bg-buttons);
         border: 1px solid var(--color-border-buttons);
         border-radius: 6px;
+        color: var(--color-text-buttons);
         transition-property: color, background-color, box-shadow, border-color;
         transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
         transition-duration: 80ms;
