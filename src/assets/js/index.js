@@ -8,5 +8,5 @@ import Interface from './modules/interface';
 
 // Start work
 document.addEventListener('DOMContentLoaded', () => {
-	new Timers(Timer, Interface);
+    new Timers(Timer, Interface);
 });
