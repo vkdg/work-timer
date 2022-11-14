@@ -1,6 +1,6 @@
 .timersArea {
     .settings {
-        background-color: var(--color-bg);
+        background-color: var(--color-bg-default);
         border-top: 1px solid var(--color-border);
         display: none;
 
@@ -87,6 +87,14 @@
             &__grid {
                 grid-template-columns: 1fr;
             }
+        }
+    }
+}
+
+@include night {
+    .timersArea {
+        .settings {
+            background-color: var(--color-bg);
         }
     }
 }
