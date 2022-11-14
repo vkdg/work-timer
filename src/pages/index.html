@@ -13,7 +13,46 @@
 </head>
 
 <body>
-
+    <div class="timersArea" data-js="work-area">
+        <div class="creator" data-js="creator-area">
+            <input class="creator__title" type="text" autocomplete="off" placeholder="Название таймера" data-js="title-input">
+            <button class="creator__btn-create btn btn_text-icon" type="button" data-js="create-button">
+                <span>Создать</span>
+            </button>
+            <button class="creator__btn-export btn btn_text-icon" type="button" data-js="export-button">
+                <span>Выгрузить</span>
+            </button>
+            <button class="creator__btn-import btn btn_text-icon" type="button" data-js="import-button">
+                <span>Загрузить</span>
+            </button>
+            <input class="creator__file" type="file" accept=".json" data-js="upload-input">
+            <button class="creator__btn-history btn btn_text-icon" type="button" data-js="history-button">
+                <span>История</span>
+            </button>
+            <button class="creator__btn-settings btn btn_icon" type="button" data-js="settings-button"></button>
+        </div>
+        <div class="settings" data-js="settings-area">
+            <div class="settings__grid">
+                <label class="settings__item">
+                    <input class="settings__item-input" type="checkbox" name="settings-autostop">
+                    <span class="settings__item-text">Останавливать при добавлении нового</span>
+                </label>
+                <label class="settings__item">
+                    <input class="settings__item-input" type="checkbox" name="settings-stopOnReload">
+                    <span class="settings__item-text">Останавливать при перезагрузке страницы</span>
+                </label>
+                <label class="settings__item">
+                    <input class="settings__item-input" type="checkbox" name="settings-oneplay">
+                    <span class="settings__item-text">Только один активный</span>
+                </label>
+                <label class="settings__item">
+                    <input class="settings__item-input" type="checkbox" name="settings-replaceImport">
+                    <span class="settings__item-text">Заменять при импорте</span>
+                </label>
+            </div>
+        </div>
+        <div class="timers" data-js="timers-area"></div>
+    </div>
 </body>
 
 </html>

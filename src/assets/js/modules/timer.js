@@ -1,115 +1,171 @@
-export default class Timer {
-    #activated = false
-    #started = false
-    #paused = 0
-    #pauseStarted = undefined
-    #title = undefined
+import Base from '../_base';
 
-    constructor(timerTitle, timerDuration) {
-        if (timerDuration) {
-            const now = Date.now()
+export default class Timer extends Base {
+	#activated = false;
+	#started = false;
+	#paused = 0;
+	#pauseStarted = undefined;
+	#title = undefined;
 
-            this.#activated = true
-            this.#pauseStarted = now
-            this.#started = now - timerDuration
-        }
+	constructor(title, duration) {
+		super();
+		if (duration) {
+			const now = Date.now();
 
-        this.#title = timerTitle ? timerTitle : 'Undefined'
-    }
+			this.#activated = true;
+			this.#pauseStarted = now;
+			this.#started = now - duration;
+		}
 
-    #getTimeString(seconds) {
-        seconds = Math.floor(seconds / 1000)
-        let h = Math.floor(seconds / 3600)
-        seconds = seconds % 3600
-        let m = Math.floor(seconds / 60)
-        let mPart = m / 60
-        let hours = (h + mPart).toFixed(2)
-        let s = seconds % 60
+		this.#title = title.length ? title : 'Задача без названия';
+	}
 
-        if (h < 10) h = `0${h}`
-        if (m < 10) m = `0${m}`
-        if (s < 10) s = `0${s}`
+	/**
+	 * Возвращает строку, сформатированную для таймера
+	 *
+	 * @param {number} seconds
+	 * @returns {String}
+	 */
+	getTimeString(seconds) {
+		seconds = Math.floor(seconds / 1000);
+		let h = Math.floor(seconds / 3600);
+		seconds = seconds % 3600;
+		let m = Math.floor(seconds / 60);
+		let mPart = m / 60;
+		let hours = (h + mPart).toFixed(2);
+		let s = seconds % 60;
 
-        return `${h}:${m}:${s} — ${hours}`
-    }
+		h = this.prependZeros(h);
+		m = this.prependZeros(m);
+		s = this.prependZeros(s);
 
-    get durationSeconds() {
-        const now = Date.now()
-        if (this.#activated && !this.#pauseStarted) { // Работает и активирован
-            return now - this.#started - this.#paused
-        } else if (!this.#activated) { // Не активирован
-            return 0
-        } else { // На паузе
-            return now - this.#started - (now - this.#pauseStarted + this.#paused)
-        }
-    }
+		return `${h}:${m}:${s} — ${hours}`;
+	}
 
-    get getTime() {
-        if (this.#activated && !this.#pauseStarted) {
-            return this.#getTimeString(Date.now() - this.#started - this.#paused)
-        }
+	/**
+	 * Возвращает время, прошедшее в секундах с момента
+	 * запуска таймера
+	 *
+	 * @return {Number}
+	 */
+	get durationSeconds() {
+		const now = Date.now();
+		if (this.#activated && !this.#pauseStarted) {
+			// Работает и активирован
+			return now - this.#started - this.#paused;
+		} else if (!this.#activated) {
+			// Не активирован
+			return 0;
+		} else {
+			// На паузе
+			return (
+				now - this.#started - (now - this.#pauseStarted + this.#paused)
+			);
+		}
+	}
 
-        return false
-    }
+	/**
+	 * Возвращает отформатированное время для таймера
+	 *
+	 * @return {String}
+	 */
+	get getTime() {
+		if (this.#activated && !this.#pauseStarted) {
+			return this.getTimeString(
+				Date.now() - this.#started - this.#paused
+			);
+		}
 
-    get getTitle() {
-        return this.#title
-    }
+		return false;
+	}
 
-    get timeForReload() {
-        return this.#getTimeString(Date.now() - this.#started - this.#paused)
-    }
+	/**
+	 * Возвращает заголовок таймера
+	 *
+	 * @return {String}
+	 */
+	get getTitle() {
+		return this.#title;
+	}
 
-    get isPaused() {
-        return this.#pauseStarted ? true : false
-    }
+	/**
+	 * Возвращает время, для вывода в случае перезагрузки
+	 *
+	 * @return {String}
+	 */
+	get timeForReload() {
+		return this.getTimeString(Date.now() - this.#started - this.#paused);
+	}
 
-    get timerData() {
-        return {
-            activated: this.#activated,
-            started: this.#started,
-            paused: this.#paused,
-            pauseStarted: this.#pauseStarted,
-            title: this.#title
-        }
-    }
+	/**
+	 * Возвращает состояние таймера, на паузе или нет?
+	 *
+	 * @return {Boolean}
+	 */
+	get isPaused() {
+		return this.#pauseStarted ? true : false;
+	}
 
-    set title(newTitle) {
-        this.#title = newTitle
-    }
+	/**
+	 * Возвращает полную информацию о таймере
+	 *
+	 * @return {Object}
+	 */
+	get timerData() {
+		return {
+			activated: this.#activated,
+			started: this.#started,
+			paused: this.#paused,
+			pauseStarted: this.#pauseStarted,
+			title: this.#title,
+		};
+	}
 
-    pause() {
-        const now = Date.now()
+	/**
+	 * Меняет заголовок таймера
+	 *
+	 * @param {String} title Новый заголовок таймера
+	 */
+	set title(title) {
+		this.#title = title;
+		return;
+	}
 
-        if (this.#activated && !this.#pauseStarted) {
-            this.#pauseStarted = now
-        }
-    }
+	/**
+	 * Ставит таймер на паузу
+	 */
+	pause() {
+		const now = Date.now();
 
-    playPause() {
-        const now = Date.now()
+		if (this.#activated && !this.#pauseStarted) {
+			this.#pauseStarted = now;
+		}
+	}
 
-        if (!this.#activated) {
+	/**
+	 * Переключает плей/паузу
+	 */
+	playPause() {
+		const now = Date.now();
 
-            this.#activated = true
-            this.#started = now
+		if (!this.#activated) {
+			this.#activated = true;
+			this.#started = now;
+		} else if (this.#pauseStarted) {
+			this.#paused += now - this.#pauseStarted;
+			this.#pauseStarted = undefined;
+		} else {
+			this.#pauseStarted = now;
+		}
+	}
 
-        } else if (this.#pauseStarted) {
-
-            this.#paused += now - this.#pauseStarted
-            this.#pauseStarted = undefined
-
-        } else {
-
-            this.#pauseStarted = now
-
-        }
-    }
-
-    restart() {
-        this.#activated = false
-        this.#started = false
-        this.#paused = 0
-        this.#pauseStarted = undefined
-    }
+	/**
+	 * Обнуляет данные таймера
+	 */
+	restart() {
+		this.#activated = false;
+		this.#started = false;
+		this.#paused = 0;
+		this.#pauseStarted = undefined;
+	}
 }
