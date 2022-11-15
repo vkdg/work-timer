@@ -6,9 +6,8 @@ export default class Timer extends Base {
     #paused = 0;
     #pauseStarted = undefined;
     #title = undefined;
-    #link = undefined;
 
-    constructor(title, duration, link = undefined) {
+    constructor(title, duration) {
         super();
         if (duration) {
             const now = Date.now();
@@ -19,7 +18,6 @@ export default class Timer extends Base {
         }
 
         this.#title = title.length ? title : 'Задача без названия';
-        this.#link = link ? link : undefined;
     }
 
     /**
@@ -130,16 +128,6 @@ export default class Timer extends Base {
      */
     set title(title) {
         this.#title = title;
-        return;
-    }
-
-    /**
-     * Меняет ссылку приложенную к таймеру
-     *
-     * @param {String} link Новая ссылка для таймера
-     */
-    set link(link) {
-        this.#link = link;
         return;
     }
 

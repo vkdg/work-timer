@@ -8,7 +8,6 @@ export default class Interface extends Base {
     generateTimer(timerID, props) {
         const area = this.ge('div', 'timer');
         const title = this.ge('input', 'timer__title-input');
-        const link = this.ge('input', 'timer__link-input');
         const result = this.ge('div', 'timer__result', {
             innerText: '00:00:00 — 0.00',
         });
@@ -26,7 +25,7 @@ export default class Interface extends Base {
             'timer__button_restart',
         ]);
 
-        const box = [title, link, playpause, result, restart, remove];
+        const box = [title, playpause, result, restart, remove];
         box.forEach((el) => area.appendChild(el));
 
         title.value = props.timerTitle.trim().length
@@ -35,6 +34,6 @@ export default class Interface extends Base {
 
         area.dataset.jsTimerId = timerID;
 
-        return { area, title, link, result, playpause, remove, restart };
+        return { area, title, result, playpause, remove, restart };
     }
 }
