@@ -318,6 +318,8 @@ export default class Timers extends Base {
         this.updateTimers();
         // Обновляем хранилища
         this.updateStorage();
+        // Обновляем заголовки страницы
+        this.updatePageTitles();
     }
 
     /**
@@ -529,5 +531,29 @@ export default class Timers extends Base {
         if (settingsBackup.onePlay) this.$settingOnePlay.checked = true;
         if (settingsBackup.replaceImport)
             this.$settingReplaceImport.checked = true;
+    }
+
+    /**
+     * Обновляет заголовки страницы
+     */
+    updatePageTitles() {
+        const activeTimersTitles = [];
+
+        for (const key of this.timers.keys()) {
+            const currentTimer = this.timers.get(key);
+            if (!currentTimer.controls.isPaused) {
+                activeTimersTitles.push(currentTimer.controls.getTitle);
+            }
+        }
+
+        if (activeTimersTitles.length > 1) {
+            this.setPageTitle(
+                `[▶] Запущенные задачи: ${activeTimersTitles.length}`
+            );
+        } else if (activeTimersTitles.length === 1) {
+            this.setPageTitle(`[▶] ${activeTimersTitles[0]}`);
+        } else {
+            this.setPageTitle('Work Timers');
+        }
     }
 }
