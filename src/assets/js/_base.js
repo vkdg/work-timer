@@ -145,4 +145,13 @@ export default class Base {
         const data = JSON.stringify(timers);
         localStorage.setItem(type, data);
     }
+
+    /**
+     * Устанавливает заголовок страницы
+     *
+     * @param {String} title Новый заголовок страницы
+     */
+    setPageTitle(title) {
+        document.title = title;
+    }
 }
