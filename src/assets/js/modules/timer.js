@@ -103,7 +103,7 @@ export default class Timer extends Base {
      * @return {Boolean}
      */
     get isPaused() {
-        return this.#pauseStarted ? true : false;
+        return this.#pauseStarted || !this.#activated ? true : false;
     }
 
     /**
