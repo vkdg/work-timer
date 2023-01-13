@@ -174,7 +174,7 @@ export default class Timers extends Base {
      * Запускает интервалы
      */
     _intervals() {
-        return setInterval(this.updateActions.bind(this), 1000);
+        return setInterval(this.updateActions.bind(this), 500);
     }
 
     /**
@@ -338,7 +338,6 @@ export default class Timers extends Base {
      * Обновляет хранилища
      */
     updateStorage() {
-        // TODO: Добавить сохранение настроек в локальное хранилище
         this.createTimersBackup();
         this.createSettingsBackup();
     }
@@ -391,10 +390,17 @@ export default class Timers extends Base {
             )
         ) {
             timer.restart();
-            if (!timer.isPaused)
+
+            if (
+                !timerUI.playpause.classList.contains(
+                    '.timer__button_playpause-paused'
+                )
+            ) {
                 timerUI.playpause.classList.add(
                     'timer__button_playpause-paused'
                 );
+            }
+
             timerUI.result.innerText = '00:00:00 — 0.00';
         }
     }
