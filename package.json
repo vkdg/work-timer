@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack serve",
-    "test": "editorconfig-checker"
+    "test": "editorconfig-checker",
+    "deploy": "cd docs && rsync --archive --compress --delete . pi@raspberry.localnet:/var/www/timer.raspberry.localnet/"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
