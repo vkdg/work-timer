@@ -24,8 +24,12 @@ export default class Interface extends Base {
             'timer__button',
             'timer__button_restart',
         ]);
+        const getTask = this.ge('div', [
+            'timer__button',
+            'timer__button_get-task'
+        ]);
 
-        const box = [title, playpause, result, restart, remove];
+        const box = [title, playpause, getTask, result, restart, remove];
         box.forEach((el) => area.appendChild(el));
 
         title.value = props.timerTitle.trim().length
@@ -34,6 +38,6 @@ export default class Interface extends Base {
 
         area.dataset.jsTimerId = timerID;
 
-        return { area, title, result, playpause, remove, restart };
+        return { area, title, getTask, result, playpause, restart, remove };
     }
 }

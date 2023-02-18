@@ -65,6 +65,21 @@ export default class Timers extends Base {
             '[name="settings-replaceImport"]',
             this.$settingsArea
         );
+        // Настройка "Включить API"
+        this.$settingEnableApi = this.qs(
+            '[name="settings-enableApi"]',
+            this.$settingsArea
+        );
+        // Поле настройки "Planfix API"
+        this.$settingApiUrl = this.qs(
+            '[name="settings-apiUrl"]',
+            this.$settingsArea
+        );
+        // Поле настройки "API Key"
+        this.$settingApiKey = this.qs(
+            '[name="settings-apiKey"]',
+            this.$settingsArea
+        );
 
         // -- Инпуты
         // Инпут для заголовка нового таймера
@@ -211,6 +226,10 @@ export default class Timers extends Base {
         timerUI.title.addEventListener(
             'keyup',
             this.timerChangeTitle.bind(this, timer, timerUI)
+        );
+        timerUI.getTask.addEventListener(
+            'click',
+            this.timerGetTaskName.bind(this, timer, timerUI)
         );
 
         // Если установлена настройка "Останавливать при добавлении нового, останавливаем таймеры"
@@ -414,7 +433,35 @@ export default class Timers extends Base {
 
         if (title.length > 0) {
             timer.title = title;
-            // createTimersBackup();
+        }
+    }
+
+    /**
+     * Получает имя задачи из Planfix
+     */
+    timerGetTaskName(timer, timerUI, event) {
+        const oldTitle = timer.getTitle;
+        const TaskRegex = new RegExp('https\\:\\/\\/[a-z]+\\.[a-z]+\\.ru\\/task\\/([0-9]+)', 'gm')
+        let match;
+
+        while ((match = TaskRegex.exec(oldTitle)) !== null) {
+            if (this.$settingEnableApi.checked && match[1]) {
+                fetch(`${this.$settingApiUrl.value}rest/task/${match[1]}/?fields=id,name&access_token=${this.$settingApiKey.value}`, {
+                    method: 'get'
+                })
+                .then(response => {
+                    if (!response.ok) return false;
+                    return response.json();
+                })
+                .then(response => {
+                    if (response && response.result === "success") {
+                        console.log(response.task);
+
+                        timer.title = `${response.task.name} (${this.$settingApiUrl.value}task/${response.task.id})`;
+                        timerUI.title.value = `${response.task.name} (${this.$settingApiUrl.value}task/${response.task.id})`;
+                    }
+                });
+            }
         }
     }
 
@@ -457,6 +504,9 @@ export default class Timers extends Base {
             // stopOnReload: this.$settingStopOnReload.checked,
             onePlay: this.$settingOnePlay.checked,
             // replaceImport: this.$settingReplaceImport.checked,
+            enableApi: this.$settingEnableApi.checked,
+            apiUrl: this.$settingApiUrl.value,
+            apiKey: this.$settingApiKey.value,
         };
 
         this.setStorageData(settings, 'settings');
@@ -509,6 +559,10 @@ export default class Timers extends Base {
                     'keyup',
                     this.timerChangeTitle.bind(this, timer, timerUI)
                 );
+                timerUI.getTask.addEventListener(
+                    'click',
+                    this.timerGetTaskName.bind(this, timer, timerUI)
+                );
 
                 // Добавляем уже прошедшее время в таймер
                 const displayTime =
@@ -532,11 +586,12 @@ export default class Timers extends Base {
      */
     restoreSettingsFromBackup(settingsBackup) {
         if (settingsBackup.autostop) this.$settingAutostop.checked = true;
-        if (settingsBackup.stopOnReload)
-            this.$settingStopOnReload.checked = true;
+        if (settingsBackup.stopOnReload) this.$settingStopOnReload.checked = true;
         if (settingsBackup.onePlay) this.$settingOnePlay.checked = true;
-        if (settingsBackup.replaceImport)
-            this.$settingReplaceImport.checked = true;
+        if (settingsBackup.replaceImport) this.$settingReplaceImport.checked = true;
+        if (settingsBackup.enableApi) this.$settingEnableApi.checked = true;
+        if (settingsBackup.apiUrl) this.$settingApiUrl.value = settingsBackup.apiUrl;
+        if (settingsBackup.apiKey) this.$settingApiKey.value = settingsBackup.apiKey;
     }
 
     /**

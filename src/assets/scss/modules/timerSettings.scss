@@ -16,6 +16,38 @@
         }
     }
 
+    .settings__input-block {
+        border-top: 1px solid var(--color-border);
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .settings__input-block-title {
+            color: var(--color-text);
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .settings__input-block-item-title {
+            color: var(--color-text);
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        .settings__input-block-item-field {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border-radius: 3px;
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            background-color: var(--color-bg-default);
+            font-size: 12px;
+        }
+    }
+
     .settings__item {
         display: flex;
         cursor: pointer;
