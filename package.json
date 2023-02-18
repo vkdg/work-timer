@@ -15,6 +15,7 @@
     "babel-loader": "^8.2.5",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
+    "dotenv": "^16.0.3",
     "editorconfig-checker": "4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
@@ -26,7 +27,5 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.2"
   },
-  "dependencies": {
-    "dotenv": "^16.0.3"
-  }
+  "dependencies": {}
 }
